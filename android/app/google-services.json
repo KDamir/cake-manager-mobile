@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "205177149415",
+    "firebase_url": "https://cakemanager-32a32.firebaseio.com",
+    "project_id": "cakemanager-32a32",
+    "storage_bucket": "cakemanager-32a32.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205177149415:android:a6944a4e5f922374",
+        "android_client_info": {
+          "package_name": "kz.kdamir.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205177149415-ddpsuhcsfecir1fot1v0g9par3osa31p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDUhuNhiu_K991O2pZGSsn_e6mM-59xPw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
