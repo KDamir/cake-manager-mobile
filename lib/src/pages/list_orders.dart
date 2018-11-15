@@ -5,6 +5,7 @@ import '../add_dialog.dart';
 import '../cake_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../auth.dart';
+import 'order_detail.dart';
 import 'dart:developer';
 
 class ListOrders extends StatefulWidget {
@@ -51,6 +52,13 @@ class _ListOrdersState extends State<ListOrders> {
     ));
   }
 
+  void showOrder(CakeOrderModel model) {
+    Navigator.push(context, MaterialPageRoute<DismissDialogAction>(
+      builder: (BuildContext context) => OrderDetail(model: model),
+      fullscreenDialog: true,
+    ));
+  }
+
   Widget cakeItem(BuildContext context, int index, AsyncSnapshot snapshot) {
     return CakeCard(
       title: snapshot.data.documents[index].data['name'],
@@ -68,10 +76,13 @@ class _ListOrdersState extends State<ListOrders> {
             return ListView.builder(
               itemCount: snapshot.data.documents.length,
               itemBuilder: (context, int index) {
+                CakeOrderModel cakeModel = CakeOrderModel
+                    .fromDoc(snapshot.data.documents[index]);
                 // debugger();
                 return CakeCard(
-                  title: snapshot.data.documents[index].data['name'],
-                  description: snapshot.data.documents[index].data['description'],
+                  title: cakeModel.orderName,
+                  description: cakeModel.description,
+                  onPress: () => showOrder(cakeModel),
                 );
               }
             );

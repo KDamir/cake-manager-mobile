@@ -56,6 +56,19 @@ class CakeOrderModel {
     _userId = value;
   }
 
+  CakeOrderModel.fromDoc(var document) {
+    var data = document.data;
+    _id = data['id'];
+    _orderName = data['name'];
+    _toDateTime = data['onDate'];
+    _decor = data['decor'];
+    _description = data['description'];
+    _clientName = data['clientName'];
+    _clientContact = data['clientContact'];
+    _price = double.parse(data['price'].toString());
+    _userId = data['userId'];
+  }
+
   CakeOrderModel.fromJson(Map<String,dynamic> parsedJson) {
     _id = parsedJson['id'];
     _orderName = parsedJson['name'];
@@ -70,7 +83,7 @@ class CakeOrderModel {
   Map<String, dynamic> toJson() =>
   {
     'name': _orderName,
-    'onDate': _toDateTime.toIso8601String() + 'Z',
+    'onDate': _toDateTime,
     'decor': _decor,
     'description': _description,
     'clientName': _clientName,

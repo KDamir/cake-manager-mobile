@@ -4,8 +4,13 @@ class CakeCard extends StatelessWidget {
 
   final String title;
   final String description;
+  final Function onPress;
 
-  CakeCard({Key key, this.title, this.description}) : super(key: key);
+  CakeCard({Key key,
+    this.title,
+    this.description,
+    this.onPress,
+  }) : super(key: key);
 
 
   @override
@@ -18,6 +23,7 @@ class CakeCard extends StatelessWidget {
             leading: Icon(Icons.album),
             title: Text('$title'),
             subtitle: Text('$description'),
+            onTap: () => onPress(),
           ),
         ],
       ),
