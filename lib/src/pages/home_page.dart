@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import '../auth.dart';
+import '../auth_provider.dart';
 import 'list_orders.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatelessWidget {
-  final BaseAuth auth;
-  final VoidCallback onSignOut;
+  final VoidCallback onSignedOut;
 
-  HomePage({this.auth, this.onSignOut});
+  HomePage({this.onSignedOut});
 
   @override
   Widget build(BuildContext context) {
 
     void _signOut() async {
       try {
+        var auth = AuthProvider.of(context).auth;
         await auth.signOut();
-        onSignOut();
+        onSignedOut();
       } catch (e) {
         print(e);
       }
@@ -31,7 +33,7 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        body: new ListOrders(auth),
+        body: new ListOrders(),
     );
   }
 }

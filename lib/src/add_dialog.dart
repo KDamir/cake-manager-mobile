@@ -8,6 +8,7 @@ import 'utils/date_item.dart';
 import 'widgets/ck_text_field.dart';
 import 'widgets/ck_date_column.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobile/src/auth_provider.dart';
 import 'auth.dart';
 
 enum DismissDialogAction {
@@ -17,15 +18,11 @@ enum DismissDialogAction {
 }
 
 class AddDialog extends StatefulWidget {
-  final Function updateState;
-
-  AddDialog({Key key, this.updateState}) : super(key: key);
   @override
   AddDialogState createState() => AddDialogState();
 }
 
 class AddDialogState extends State<AddDialog> {
-
   bool _saveNeeded = false;
   bool _hasDecor = false;
   bool _hasName = false;
@@ -40,12 +37,11 @@ class AddDialogState extends State<AddDialog> {
   CollectionReference get orders => Firestore.instance.collection('cake-orders');
 
   @override
-  void initState() {
-    super.initState();
-    new Auth().currentUser().then((id) {
-      setState(() {
-        _userId = id;
-      });
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    var auth = AuthProvider.of(context).auth;
+    auth.currentUser().then((id) {
+      _userId = id;
     });
   }
 
@@ -55,7 +51,6 @@ class AddDialogState extends State<AddDialog> {
     clientNameController.dispose();
     clientContactController.dispose();
     priceController.dispose();
-    widget.updateState();
     super.dispose();
   }
 
@@ -79,7 +74,6 @@ class AddDialogState extends State<AddDialog> {
             FlatButton(
               child: const Text('CANCEL'),
               onPressed: () {
-                widget.updateState();
                 Navigator.of(context).pop(false); // Pops the confirmation dialog but not the page.
               }
             ),
@@ -102,9 +96,6 @@ class AddDialogState extends State<AddDialog> {
   }
 
   save() async {
-//    apiProvider.createCakeOrder(model).then((result) {
-//      widget.updateState();
-//    });
     await _addOrder();
     Navigator.pop(context, DismissDialogAction.save);
   }

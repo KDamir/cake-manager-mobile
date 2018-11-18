@@ -6,48 +6,34 @@ import '../cake_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../auth.dart';
 import 'order_detail.dart';
+import 'package:mobile/src/auth_provider.dart';
 import 'dart:developer';
 
 class ListOrders extends StatefulWidget {
-  final BaseAuth auth;
-
-  ListOrders(this.auth);
-
   @override
   _ListOrdersState createState() => new _ListOrdersState();
 }
 
 class _ListOrdersState extends State<ListOrders> {
   List<CakeOrderModel> orders = new List();
-  ApiProvider apiProvider = new ApiProvider();
   String userId;
 
   @override
-  void initState() {
-    super.initState();
-    widget.auth.currentUser().then((id) {
-      setState(() {
-        userId = id;
-      });
-    });
-//    apiProvider.fetchCakeOrders().then((result) {
-//      setState(() {
-//        orders = result.results;
-//      });
-//    });
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    fillUserId();
   }
 
-  updateState() {
-//    apiProvider.fetchCakeOrders().then((result) {
-//      setState(() {
-//        orders = result.results;
-//      });
-//    });
+  fillUserId() {
+    var auth = AuthProvider.of(context).auth;
+    auth.currentUser().then((id) {
+      userId = id;
+    });
   }
 
   void openDialog() {
     Navigator.push(context, MaterialPageRoute<DismissDialogAction>(
-      builder: (BuildContext context) => AddDialog(updateState : updateState),
+      builder: (BuildContext context) => AddDialog(),
       fullscreenDialog: true,
     ));
   }
@@ -57,13 +43,6 @@ class _ListOrdersState extends State<ListOrders> {
       builder: (BuildContext context) => OrderDetail(model: model),
       fullscreenDialog: true,
     ));
-  }
-
-  Widget cakeItem(BuildContext context, int index, AsyncSnapshot snapshot) {
-    return CakeCard(
-      title: snapshot.data.documents[index].data['name'],
-      description: snapshot.data.documents[index].data['description'],
-    );
   }
 
   @override
