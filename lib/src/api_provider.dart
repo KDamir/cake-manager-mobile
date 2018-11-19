@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
-import 'cake_order_model.dart';
+import 'package:mobile/src/models/cake_order_model.dart';
 
 class ApiProvider {
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../cake_order_model.dart';
+import 'package:mobile/src/models/cake_order_model.dart';
 import '../api_provider.dart';
 import '../add_dialog.dart';
-import '../cake_card.dart';
+import 'package:mobile/src/models/cake_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../auth.dart';
 import 'order_detail.dart';

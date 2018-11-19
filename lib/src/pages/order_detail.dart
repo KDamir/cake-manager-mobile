@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../cake_order_model.dart';
+import 'package:mobile/src/models/cake_order_model.dart';
 
 class OrderDetail extends StatelessWidget {
 

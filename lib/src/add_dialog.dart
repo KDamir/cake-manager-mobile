@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import 'cake_order_model.dart';
+import 'package:mobile/src/models/cake_order_model.dart';
 import 'api_provider.dart';
 import 'utils/date_item.dart';
 import 'widgets/ck_text_field.dart';
