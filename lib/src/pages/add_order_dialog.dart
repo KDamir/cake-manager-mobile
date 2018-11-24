@@ -1,15 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/src/api_provider.dart';
 
 import 'package:mobile/src/models/cake_order_model.dart';
-import 'api_provider.dart';
-import 'utils/date_item.dart';
-import 'widgets/ck_text_field.dart';
-import 'widgets/ck_date_column.dart';
+import 'package:mobile/src/widgets/ck_text_field.dart';
+import 'package:mobile/src/widgets/ck_date_column.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile/src/auth_provider.dart';
-import 'auth.dart';
 
 enum DismissDialogAction {
   cancel,
@@ -17,12 +15,12 @@ enum DismissDialogAction {
   save,
 }
 
-class AddDialog extends StatefulWidget {
+class AddOrderDialog extends StatefulWidget {
   @override
-  AddDialogState createState() => AddDialogState();
+  AddOrderDialogState createState() => AddOrderDialogState();
 }
 
-class AddDialogState extends State<AddDialog> {
+class AddOrderDialogState extends State<AddOrderDialog> {
   bool _saveNeeded = false;
   bool _hasDecor = false;
   bool _hasName = false;
@@ -162,80 +160,84 @@ class AddDialogState extends State<AddDialog> {
     });
   }
 
+  List<Widget> firstScreen() {
+    ThemeData theme = Theme.of(context);
+    return <Widget>[
+      CkTextField(
+        label: 'Название заказа',
+        style: theme.textTheme.headline,
+        onchange: onChangeOrderName,
+      ),
+      CkTextField(
+        label: 'Оформление',
+        hint: 'Какое оформление?',
+        onchange: onChangeDecor,
+      ),
+      DateTimeColumn(
+        style: theme.textTheme.caption,
+        dateTime: model.toDateTime,
+        onchange: onChangeDateTime,
+      ),
+      CkTextField(
+        label: 'Описание',
+        onchange: onChangeDescription,
+      ),
+    ];
+  }
+
+  List<Widget> secondScreen() {
+    return <Widget>[
+      CkTextField(
+        controller: clientNameController,
+        label: 'Имя клиента',
+        onchange: onChangeClientName,
+      ),
+      CkTextField(
+        controller: clientContactController,
+        label: 'Контакты клиента',
+        onchange: onChangeClientContact,
+      ),
+      CkTextField(
+        controller: priceController,
+        label: 'Сумма',
+        onchange: onChangePrice,
+      ),
+    ];
+  }
+
   bool _firstScreen = true;
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    List<Widget> childrens;
+    ThemeData theme = Theme.of(context);
     Text header = Text(
         _firstScreen ? 'Далее' : 'Готово',
         style: theme.textTheme.body1.copyWith(color: Colors.white)
     );
+    List<Widget> childrens = _firstScreen ? firstScreen() : secondScreen();
     Function onPress = _firstScreen ? nextScreen : save;
-    if (_firstScreen) {
-      childrens = <Widget>[
-        CkTextField(
-          label: 'Название заказа',
-          style: theme.textTheme.headline,
-          onchange: onChangeOrderName,
-        ),
-        CkTextField(
-          label: 'Оформление',
-          hint: 'Какое оформление?',
-          onchange: onChangeDecor,
-        ),
-        DateTimeColumn(
-          style: theme.textTheme.caption,
-          dateTime: model.toDateTime,
-          onchange: onChangeDateTime,
-        ),
-        CkTextField(
-          label: 'Описание',
-          onchange: onChangeDescription,
-        ),
-      ];
-    } else {
-      childrens = <Widget>[
-        CkTextField(
-          controller: clientNameController,
-          label: 'Имя клиента',
-          onchange: onChangeClientName,
-        ),
-        CkTextField(
-          controller: clientContactController,
-          label: 'Контакты клиента',
-          onchange: onChangeClientContact,
-        ),
-        CkTextField(
-          controller: priceController,
-          label: 'Сумма',
-          onchange: onChangePrice,
-        ),
-      ];
-    }
     return Scaffold(
       appBar: AppBar(
-          title: Text(_hasName && model != null ? model.orderName : 'Новый заказ'),
-          actions: <Widget> [
-            FlatButton(
-              child: header,
-              onPressed: onPress
-            )
-          ]
+        title: Text(_hasName && model != null ? model.orderName : 'Новый заказ'),
+        actions: <Widget> [
+          FlatButton(
+            child: header,
+            onPressed: onPress
+          )
+        ]
       ),
       body: Form(
-          onWillPop: _onWillPop,
-          child: ListView(
-            padding: const EdgeInsets.all(16.0),
-            children: childrens.map<Widget>((Widget child) {
-              return Container(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                height: 96.0,
-                child: child
-              );
-            }).toList()
-          )
+        onWillPop: _onWillPop,
+        child: ListView(
+          padding: const EdgeInsets.all(16.0),
+          children: childrens.map<Widget>((Widget child) {
+            return Container(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              height: 96.0,
+              child: child
+            );
+          }).toList()
+        )
       ),
     );
   }
