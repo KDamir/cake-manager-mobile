@@ -4,6 +4,7 @@ import 'package:mobile/src/auth_provider.dart';
 import 'package:mobile/src/models/cake_card.dart';
 import 'package:mobile/src/models/expense_card.dart';
 import 'package:mobile/src/models/expense_model.dart';
+import 'package:mobile/src/pages/add_expense_dialog.dart';
 
 
 class ExpensePage extends StatefulWidget {
@@ -30,6 +31,12 @@ class _ExpensePageState extends State<ExpensePage> {
     });
   }
 
+  void addExpense() {
+    Navigator.push(context, MaterialPageRoute<DismissDialogAction>(
+      builder: (BuildContext context) => AddExpenseDialog(),
+      fullscreenDialog: true,
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +62,8 @@ class _ExpensePageState extends State<ExpensePage> {
         },
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: () => {},
-        tooltip: 'Add new order for cake',
+        onPressed: addExpense,
+        tooltip: 'Add new expense',
         child: new Icon(Icons.add),
       ),
     );

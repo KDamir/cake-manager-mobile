@@ -3,8 +3,11 @@ class ExpenseModel {
   String _name;
   String _type;
   double _value;
-  DateTime _date;
+  DateTime _date = DateTime.now();
   String _userId;
+
+
+  ExpenseModel();
 
   String get userId => _userId;
 
